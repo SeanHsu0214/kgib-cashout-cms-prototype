@@ -172,7 +172,7 @@ h1 {
 }
 table {
   width: 100%;
-  min-width: 1390px;
+  min-width: 1580px;
   border-collapse: collapse;
 }
 th, td {
@@ -206,6 +206,7 @@ th {
 .tag.red { color: var(--red); border-color: #ffccc7; background: #fff2f0; }
 .tag.green { color: #389e0d; border-color: #b7eb8f; background: #f6ffed; }
 .tag.blue { color: var(--blue); border-color: #91caff; background: #e6f4ff; }
+.tag.gray { color: rgba(0, 0, 0, .65); border-color: var(--line); background: #fafafa; }
 .kgi-cell { color: var(--blue); font-weight: 500; }
 .action-group {
   display: flex;

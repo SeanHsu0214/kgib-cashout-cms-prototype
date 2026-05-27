@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KGI Cashout - Operational Transfer Orders Prototype</title>
-    <link rel="stylesheet" href="./kgib-cashout.css?v=20260527-5" />
+    <link rel="stylesheet" href="./kgib-cashout.css?v=20260527-6" />
   </head>
   <body>
     <div class="app-shell">
@@ -59,6 +59,7 @@
                     <th>To <span class="filter-icon"></span></th>
                     <th>Custodian</th>
                     <th>Status <span class="filter-icon"></span></th>
+                    <th>Bank Execution Status <span class="filter-icon"></span></th>
                     <th>Created Time <span class="filter-icon"></span></th>
                     <th>Update Time</th>
                     <th>Request By</th>
@@ -150,6 +151,10 @@
                   <label for="orderStatus">Status</label>
                   <input id="orderStatus" readonly />
                 </div>
+                <div id="bankStatusRow" class="form-row" hidden>
+                  <label for="bankExecutionStatus">Bank Execution Status</label>
+                  <input id="bankExecutionStatus" readonly />
+                </div>
               </form>
 
               <div class="form-footer" id="formFooter">
@@ -161,6 +166,6 @@
       </div>
     </div>
     <div class="toast" id="toast" role="status"></div>
-    <script src="./kgib-cashout.js?v=20260527-5"></script>
+    <script src="./kgib-cashout.js?v=20260527-6"></script>
   </body>
 </html>

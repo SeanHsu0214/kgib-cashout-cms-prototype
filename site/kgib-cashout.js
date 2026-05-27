@@ -15,6 +15,7 @@ const orders = [
     to: "1000",
     custodian: "KGI",
     status: "PENDING REVIEW",
+    bankExecutionStatus: "NOT SUBMITTED",
     assetType: "C_WITHDRAWAL_FEE",
     balance: "8,940.20",
     created: "2026/05/26 14:18:20 (UTC+08:00)",
@@ -32,6 +33,7 @@ const orders = [
     to: "1000",
     custodian: "KGI",
     status: "APPROVED",
+    bankExecutionStatus: "ACCEPTED",
     assetType: "C_DEPOSIT_FEE",
     balance: "398,600",
     created: "2026/05/25 11:22:59 (UTC+08:00)",
@@ -49,6 +51,7 @@ const orders = [
     to: "1000",
     custodian: "KGI",
     status: "REJECTED",
+    bankExecutionStatus: "NOT SUBMITTED",
     assetType: "C_DEPOSIT_FEE",
     balance: "12,480.75",
     created: "2026/05/22 12:13:11 (UTC+08:00)",
@@ -74,13 +77,19 @@ const reason = document.querySelector("#reason");
 const note = document.querySelector("#note");
 const statusRow = document.querySelector("#statusRow");
 const orderStatus = document.querySelector("#orderStatus");
+const bankStatusRow = document.querySelector("#bankStatusRow");
+const bankExecutionStatus = document.querySelector("#bankExecutionStatus");
 const formFooter = document.querySelector("#formFooter");
 const toast = document.querySelector("#toast");
 let activeOrder = null;
 let toastTimer = null;
 
 function tag(value) {
-  const color = value === "APPROVED" ? "green" : value === "REJECTED" ? "red" : "orange";
+  const color = ["APPROVED", "ACCEPTED"].includes(value) ? "green"
+    : value === "REJECTED" ? "red"
+      : value === "SUBMITTED" ? "blue"
+        : value === "NOT SUBMITTED" ? "gray"
+          : "orange";
   return `<span class="tag ${color}">${value}</span>`;
 }
 
@@ -103,6 +112,7 @@ function renderOrders() {
       <td>${item.to}</td>
       <td class="kgi-cell">${item.custodian}</td>
       <td>${tag(item.status)}</td>
+      <td>${tag(item.bankExecutionStatus)}</td>
       <td>${item.created}</td>
       <td>${item.updated}</td>
       <td>${item.requester}</td>
@@ -141,6 +151,8 @@ function resetCashoutForm() {
   note.value = "Full balance KGI fee cashout for settlement and reconciliation.";
   statusRow.hidden = true;
   orderStatus.value = "";
+  bankStatusRow.hidden = true;
+  bankExecutionStatus.value = "";
 }
 
 function setEditable(editable) {
@@ -196,6 +208,7 @@ function createOrder() {
     to: "1000",
     custodian: "KGI",
     status: "PENDING REVIEW",
+    bankExecutionStatus: "NOT SUBMITTED",
     assetType: fromAssetType.value,
     balance: amount.value,
     created: "2026/05/27 10:00:00 (UTC+08:00)",
@@ -226,6 +239,8 @@ function openOrder(id, mode) {
   note.value = item.note;
   statusRow.hidden = false;
   orderStatus.value = item.status;
+  bankStatusRow.hidden = false;
+  bankExecutionStatus.value = item.bankExecutionStatus;
   if (mode === "edit" && item.status === "PENDING REVIEW") {
     formFooter.innerHTML = `
       <button class="btn" data-cancel-review type="button">Cancel</button>
@@ -240,6 +255,7 @@ function openOrder(id, mode) {
 function reviewOrder(approved) {
   if (!activeOrder) return;
   activeOrder.status = approved ? "APPROVED" : "REJECTED";
+  activeOrder.bankExecutionStatus = approved ? "SUBMITTED" : "NOT SUBMITTED";
   activeOrder.updated = "2026/05/27 10:03:12 (UTC+08:00)";
   showList();
   showToast(approved ? "Approved. KGIB instruction 04 submitted." : "Rejected. No bank instruction submitted.");
