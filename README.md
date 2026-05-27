@@ -20,6 +20,7 @@ The repository is configured for GitHub Pages deployment from `site/` through `.
 ## Included Interaction
 
 - Existing Cashout transaction list with `KGIB Cashout` action next to `New`
+- Existing `New` entry remains visible for context but does not open an incomplete non-KGIB form in this prototype
 - KGIB form with fixed `1001 -> 1000`, KGI custodian, system-populated full-balance amount, and fee asset allowlist behavior
 - Shared list identification for KGI attribution, approval status, and bank execution state
 - Existing-style read-only Cash Out details modal with bottom `Reject` / `Approve` actions for pending requests

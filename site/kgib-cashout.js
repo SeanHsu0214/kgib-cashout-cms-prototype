@@ -96,7 +96,6 @@ const requests = [
 
 const requestRows = document.querySelector("#requestRows");
 const kgibModal = document.querySelector("#kgibModal");
-const standardModal = document.querySelector("#standardModal");
 const modalBackdrop = document.querySelector("#modalBackdrop");
 const currency = document.querySelector("#currency");
 const assetType = document.querySelector("#assetType");
@@ -176,7 +175,6 @@ function openModal(modal) {
 function closeModals() {
   modalBackdrop.hidden = true;
   kgibModal.hidden = true;
-  standardModal.hidden = true;
   detailModal.hidden = true;
 }
 
@@ -317,10 +315,11 @@ document.querySelector("#kgibBtn").addEventListener("click", () => {
   resetKgibForm();
   openModal(kgibModal);
 });
-document.querySelector("#newBtn").addEventListener("click", () => openModal(standardModal));
+document.querySelector("#newBtn").addEventListener("click", () => {
+  showToast("Existing Cash Out creation is outside this KGIB prototype.");
+});
 document.querySelector("#closeKgibBtn").addEventListener("click", closeModals);
 document.querySelector("#cancelKgibBtn").addEventListener("click", closeModals);
-document.querySelectorAll("[data-close-standard]").forEach((node) => node.addEventListener("click", closeModals));
 modalBackdrop.addEventListener("click", closeModals);
 currency.addEventListener("change", updateBalance);
 assetType.addEventListener("change", updateBalance);
