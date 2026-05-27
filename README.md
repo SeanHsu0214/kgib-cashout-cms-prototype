@@ -1,6 +1,6 @@
 # KGIB Cashout CMS Prototype
 
-Static internal-review prototype for the constrained KGIB cashout extension to `Finance Management > Operational Transfer > Cashout`.
+Static internal-review prototype for a constrained KGI Cashout scenario within `Finance Management > Operational Transfer 2.0 > Orders`.
 
 ## Run
 
@@ -19,16 +19,14 @@ The repository is configured for GitHub Pages deployment from `site/` through `.
 
 ## Included Interaction
 
-- Existing Cashout transaction list with `KGIB Cashout` action next to `New`
-- Existing `New` entry remains visible for context but does not open an incomplete non-KGIB form in this prototype
-- KGIB form with fixed `1001 -> 1000`, KGI custodian, system-populated full-balance amount, and fee asset allowlist behavior
-- Shared list identification for KGI attribution, approval status, and bank execution state
-- Existing-style read-only Cash Out details modal with bottom `Reject` / `Approve` actions for pending requests
-- KGIB execution evidence retained inside the details modal
+- Operational Transfer 2.0 order list with a dedicated `KGI Cashout` tab and `Custodian` table column
+- Full-page `New` form following the Operational Transfer 2.0 pattern
+- Form controls fixed to `1001 -> 1000`, KGI custodian, and system-populated full-balance amount
+- Eye action opens the same full-page form in read-only checker view with `Reject` / `Approve` actions for pending requests
 
 ## Prototype Assumptions
 
 - `C_DEPOSIT_FEE` and `C_WITHDRAWAL_FEE` are available for demonstration; `C_TRADING_FEE` is shown but disabled until UID `1001` posting validation is complete.
 - Submitted amount equals the displayed current balance and is not editable in this prototype.
-- Created requests use the existing Details approval mechanism; production permissions determine who sees `Reject` / `Approve`.
+- Created requests use the Operational Transfer 2.0 view/review page; production permissions determine who sees `Reject` / `Approve`.
 - Approval simulates KGIB instruction `04` submission and evidence capture; no real bank integration is executed.

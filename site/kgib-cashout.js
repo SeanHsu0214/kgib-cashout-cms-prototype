@@ -5,344 +5,258 @@ const balanceMap = {
   "TWD|C_WITHDRAWAL_FEE": "256,800",
 };
 
-const requests = [
+const orders = [
   {
-    id: "CO_KGI_9F4Q2",
+    id: 102,
+    scenario: "KGI Cashout",
+    from: "1001",
     currency: "USD",
     amount: "8,940.20",
-    from: "(1001)",
-    to: "(1000)",
+    to: "1000",
     custodian: "KGI",
     status: "PENDING REVIEW",
-    bankStatus: "NOT SUBMITTED",
     assetType: "C_WITHDRAWAL_FEE",
-    currentBalance: "8,940.20",
+    balance: "8,940.20",
     created: "2026/05/26 14:18:20 (UTC+08:00)",
     updated: "2026/05/26 14:18:21 (UTC+08:00)",
     requester: "Sean Hsu",
-    reviewer: "-",
-    reason: "KGIB fee balance cashout",
-    note: "KGI withdrawal fee settlement - full balance",
-    rail: "VASPF API / instructCode 04",
-    logs: [
-      ["Sean Hsu created KGIB cashout request for full balance USD 8,940.20.", "2026/05/26 14:18:20 (UTC+08:00)"],
-      ["System captured balance snapshot: USD 8,940.20 under UID 1001 / C_WITHDRAWAL_FEE / KGI.", "2026/05/26 14:18:20 (UTC+08:00)"],
-      ["Waiting for checker review; bank instruction not submitted.", "2026/05/26 14:18:21 (UTC+08:00)"],
-    ],
+    reason: "KGI fee balance cashout",
+    note: "Full balance KGI withdrawal fee settlement.",
   },
   {
-    id: "CO_KGI_7KD31",
+    id: 101,
+    scenario: "KGI Cashout",
+    from: "1001",
     currency: "TWD",
     amount: "398,600",
-    from: "(1001)",
-    to: "(1000)",
+    to: "1000",
     custodian: "KGI",
-    status: "COMPLETED",
-    bankStatus: "ACCEPTED",
+    status: "APPROVED",
     assetType: "C_DEPOSIT_FEE",
-    currentBalance: "398,600",
+    balance: "398,600",
     created: "2026/05/25 11:22:59 (UTC+08:00)",
     updated: "2026/05/25 11:31:44 (UTC+08:00)",
     requester: "admin-tw",
-    reviewer: "Finance Checker",
-    reason: "KGIB fee balance cashout",
-    note: "KGI deposit fee settlement - full balance",
-    rail: "P payment file / instruction code 04",
-    bankReference: "KGI-P-20260525-000042",
-    logs: [
-      ["admin-tw created KGIB cashout request for full balance TWD 398,600.", "2026/05/25 11:22:59 (UTC+08:00)"],
-      ["Finance Checker approved request after balance revalidation.", "2026/05/25 11:28:12 (UTC+08:00)"],
-      ["System submitted KGIB P payment file instruction code 04.", "2026/05/25 11:28:13 (UTC+08:00)"],
-      ["KGIB accepted payment file result: KGI-P-20260525-000042.", "2026/05/25 11:31:44 (UTC+08:00)"],
-    ],
+    reason: "KGI fee balance cashout",
+    note: "Full balance KGI deposit fee settlement.",
   },
   {
-    id: "CO_7QCM5",
-    currency: "TWD",
-    amount: "10",
-    from: "-",
-    to: "(63438)",
-    custodian: "-",
+    id: 100,
+    scenario: "KGI Cashout",
+    from: "1001",
+    currency: "USD",
+    amount: "12,480.75",
+    to: "1000",
+    custodian: "KGI",
     status: "REJECTED",
-    bankStatus: "-",
-    assetType: "-",
+    assetType: "C_DEPOSIT_FEE",
+    balance: "12,480.75",
     created: "2026/05/22 12:13:11 (UTC+08:00)",
     updated: "2026/05/22 12:13:12 (UTC+08:00)",
     requester: "admin-tw",
-    reviewer: "admin-tw",
-    reason: "Others",
-    note: "create CASH_OUT order_7QCM5",
-    logs: [["admin-tw rejected cash out request.", "2026/05/22 12:13:12 (UTC+08:00)"]],
-  },
-  {
-    id: "CO_GR85O",
-    currency: "USD",
-    amount: "100",
-    from: "-",
-    to: "(63438)",
-    custodian: "-",
-    status: "NEW",
-    bankStatus: "-",
-    assetType: "-",
-    created: "2026/05/21 11:45:34 (UTC+08:00)",
-    updated: "2026/05/21 11:45:34 (UTC+08:00)",
-    requester: "Sean Hsu",
-    reviewer: "-",
-    reason: "Others",
-    note: "test",
-    logs: [["Sean Hsu created cash out request.", "2026/05/21 11:45:34 (UTC+08:00)"]],
+    reason: "KGI fee balance cashout",
+    note: "Rejected before bank submission.",
   },
 ];
 
-const requestRows = document.querySelector("#requestRows");
-const kgibModal = document.querySelector("#kgibModal");
-const modalBackdrop = document.querySelector("#modalBackdrop");
+const listPage = document.querySelector("#listPage");
+const formPage = document.querySelector("#formPage");
+const orderRows = document.querySelector("#orderRows");
+const formCrumb = document.querySelector("#formCrumb");
+const formTitle = document.querySelector("#formTitle");
 const currency = document.querySelector("#currency");
-const assetType = document.querySelector("#assetType");
-const balance = document.querySelector("#balance");
+const fromAssetType = document.querySelector("#fromAssetType");
+const toAssetType = document.querySelector("#toAssetType");
+const fromBalance = document.querySelector("#fromBalance");
+const toBalance = document.querySelector("#toBalance");
 const amount = document.querySelector("#amount");
-const balanceCurrency = document.querySelector("#balanceCurrency");
-const amountCurrency = document.querySelector("#amountCurrency");
-const destinationAsset = document.querySelector("#destinationAsset");
-const feeNotice = document.querySelector("#feeNotice");
-const createKgibBtn = document.querySelector("#createKgibBtn");
-const detailModal = document.querySelector("#detailModal");
-const detailBody = document.querySelector("#detailBody");
-const detailFooter = document.querySelector("#detailFooter");
-const detailTitle = document.querySelector("#detailTitle");
+const reason = document.querySelector("#reason");
+const note = document.querySelector("#note");
+const statusRow = document.querySelector("#statusRow");
+const orderStatus = document.querySelector("#orderStatus");
+const formFooter = document.querySelector("#formFooter");
 const toast = document.querySelector("#toast");
-let activeId = null;
-let toastTimer;
+let activeOrder = null;
+let toastTimer = null;
 
 function tag(value) {
-  const className = {
-    "PENDING REVIEW": "orange",
-    APPROVED: "blue",
-    COMPLETED: "green",
-    REJECTED: "red",
-    NEW: "orange",
-    "NOT SUBMITTED": "gray",
-    ACCEPTED: "green",
-    SUBMITTED: "cyan",
-  }[value] || "gray";
-  return `<span class="tag ${className}">${value}</span>`;
+  const color = value === "APPROVED" ? "green" : value === "REJECTED" ? "red" : "orange";
+  return `<span class="tag ${color}">${value}</span>`;
 }
 
-function showToast(text) {
-  toast.textContent = text;
-  toast.classList.add("visible");
-  window.clearTimeout(toastTimer);
-  toastTimer = window.setTimeout(() => toast.classList.remove("visible"), 2600);
+function eyeIcon() {
+  return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.7"/></svg>`;
 }
 
-function matchesFilters(item) {
-  const from = document.querySelector("#fromFilter").value.trim();
-  const to = document.querySelector("#toFilter").value.trim();
-  const status = document.querySelector("#statusFilter").value;
-  const currencyValue = document.querySelector("#currencyFilter").value;
-  return (!from || item.from.includes(from))
-    && (!to || item.to.includes(to))
-    && (!status || item.status === status)
-    && (!currencyValue || item.currency === currencyValue);
+function editIcon() {
+  return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 20 4.2-1 10.6-10.6-3.2-3.2L5 15.8 4 20Z"/><path d="M13.8 7 17 10.2"/><path d="M4 21h16"/></svg>`;
 }
 
-function renderRows() {
-  requestRows.innerHTML = requests.filter(matchesFilters).map((item) => `
+function renderOrders() {
+  orderRows.innerHTML = orders.map((item) => `
     <tr>
+      <td>${item.id}</td>
+      <td>${item.scenario}</td>
+      <td>${item.from}</td>
       <td>${item.currency}</td>
       <td>${item.amount}</td>
-      <td>${item.from}</td>
       <td>${item.to}</td>
-      <td class="${item.custodian === "KGI" ? "kgi-cell" : ""}">${item.custodian}</td>
+      <td class="kgi-cell">${item.custodian}</td>
       <td>${tag(item.status)}</td>
-      <td>${item.bankStatus === "-" ? "-" : tag(item.bankStatus)}</td>
       <td>${item.created}</td>
       <td>${item.updated}</td>
       <td>${item.requester}</td>
-      <td>${item.reviewer}</td>
-      <td>${item.reason}</td>
-      <td>${item.note}</td>
-      <td><button class="detail-btn" data-detail="${item.id}" type="button"><svg class="detail-pencil" viewBox="0 0 16 16" aria-hidden="true"><path d="M10.9 2.2 13.8 5 5.2 13.4H2.4v-2.8L10.9 2.2Z"/><path d="m9.7 3.4 2.9 2.8"/></svg>Details</button></td>
+      <td>
+        <div class="action-group">
+          <button class="icon-action" data-view="${item.id}" type="button" aria-label="View order ${item.id}">${eyeIcon()}</button>
+          <button class="icon-action" type="button" disabled aria-label="Edit disabled">${editIcon()}</button>
+        </div>
+      </td>
     </tr>
   `).join("");
 }
 
-function openModal(modal) {
-  modalBackdrop.hidden = false;
-  modal.hidden = false;
-  if (modal === detailModal) {
-    detailModal.style.display = "flex";
-  }
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("visible");
+  window.clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => toast.classList.remove("visible"), 2400);
 }
 
-function closeModals() {
-  modalBackdrop.hidden = true;
-  kgibModal.hidden = true;
-  detailModal.hidden = true;
-  detailModal.style.display = "none";
+function showList() {
+  formPage.hidden = true;
+  listPage.hidden = false;
+  activeOrder = null;
+  renderOrders();
 }
 
-function resetKgibForm() {
-  document.querySelector("#kgibForm").reset();
-  balance.value = "-";
-  amount.value = "-";
-  balanceCurrency.textContent = "";
-  amountCurrency.textContent = "";
-  destinationAsset.value = "-";
-  feeNotice.hidden = true;
-  createKgibBtn.disabled = true;
+function resetCashoutForm() {
+  currency.value = "";
+  fromAssetType.value = "";
+  toAssetType.value = "";
+  fromBalance.textContent = "--";
+  toBalance.textContent = "--";
+  amount.value = "";
+  reason.value = "KGI fee balance cashout";
+  note.value = "Full balance KGI fee cashout for settlement and reconciliation.";
+  statusRow.hidden = true;
+  orderStatus.value = "";
 }
 
-function updateBalance() {
-  const key = `${currency.value}|${assetType.value}`;
-  const value = balanceMap[key];
-  const chosenCurrency = currency.value;
-  destinationAsset.value = assetType.value || "-";
-  balanceCurrency.textContent = chosenCurrency;
-  amountCurrency.textContent = chosenCurrency;
-  if (value) {
-    balance.value = value;
-    amount.value = value;
-    feeNotice.hidden = false;
-    feeNotice.textContent = `Full-balance rule enforced: ${chosenCurrency} ${value} will be locked at creation and revalidated before checker-approved submission.`;
-    createKgibBtn.disabled = false;
+function setEditable(editable) {
+  currency.disabled = !editable;
+  fromAssetType.disabled = !editable;
+  reason.disabled = !editable;
+  note.readOnly = !editable;
+}
+
+function setCreateFooter() {
+  formFooter.innerHTML = `<button id="saveBtn" class="btn primary" type="button" disabled><span class="save-icon"></span> Save</button>`;
+  document.querySelector("#saveBtn").addEventListener("click", createOrder);
+}
+
+function openCreate() {
+  listPage.hidden = true;
+  formPage.hidden = false;
+  formCrumb.textContent = "Create";
+  formTitle.textContent = "KGI Cashout";
+  activeOrder = null;
+  resetCashoutForm();
+  setEditable(true);
+  setCreateFooter();
+}
+
+function updateAmount() {
+  const balance = balanceMap[`${currency.value}|${fromAssetType.value}`];
+  toAssetType.value = fromAssetType.value;
+  if (balance) {
+    fromBalance.textContent = `${currency.value} ${balance}`;
+    toBalance.textContent = "--";
+    amount.value = balance;
   } else {
-    balance.value = "-";
-    amount.value = "-";
-    createKgibBtn.disabled = true;
-    feeNotice.hidden = true;
+    fromBalance.textContent = "--";
+    toBalance.textContent = "--";
+    amount.value = "";
+  }
+  const saveBtn = document.querySelector("#saveBtn");
+  if (saveBtn) {
+    saveBtn.disabled = !balance;
   }
 }
 
-function openDetails(id) {
-  const item = requests.find((request) => request.id === id);
-  activeId = id;
-  detailTitle.textContent = `Cash Out: ${item.id}`;
-  const executionEvidence = item.custodian === "KGI"
-    ? `<div class="section-heading">KGIB Execution Evidence</div>
-       <div class="evidence">
-         <strong>Rail:</strong> ${item.rail}<br />
-         <strong>Instruction code:</strong> 04<br />
-         <strong>Bank reference:</strong> ${item.bankReference || "Not available before submission"}<br />
-         <strong>Execution status:</strong> ${item.bankStatus}
-       </div>`
-    : "";
-  detailBody.innerHTML = `
-    <h3>From</h3>
-    <div class="form-grid three">
-      <label>Uid<input value="${item.from}" readonly /></label>
-      <label>Currency<input value="${item.currency}" readonly /></label>
-      <label>Asset Type<input value="${item.assetType}" readonly /></label>
-      <label>Amount<input value="${item.amount}" readonly /></label>
-      <label>Current Balance<input value="${item.currentBalance || item.amount}" readonly /></label>
-      <label>Custodian<input value="${item.custodian}" readonly /></label>
-    </div>
-    <div class="direction">↓</div>
-    <h3>To</h3>
-    <div class="form-grid three destination">
-      <label>Uid<input value="${item.to}" readonly /></label>
-      <label>Asset Type<input value="${item.assetType}" readonly /></label>
-    </div>
-    <div class="form-grid footer-fields">
-      <label>Reason<input value="${item.reason}" readonly /></label>
-      <label class="wide">Note<textarea rows="2" readonly>${item.note}</textarea></label>
-      <label>Status<input value="${item.status}" readonly /></label>
-    </div>
-    ${executionEvidence}
-  `;
-  const isPending = item.status === "PENDING REVIEW";
-  detailFooter.innerHTML = isPending
-    ? `<button class="btn" data-close-detail type="button">Cancel</button>
-       <button class="btn primary" data-reject type="button">Reject</button>
-       <button class="btn primary" data-approve type="button">Approve</button>`
-    : `<button class="btn" data-close-detail type="button">Close</button>`;
-  openModal(detailModal);
-}
-
-function createKgibRequest() {
-  const now = "2026/05/26 16:08:12 (UTC+08:00)";
-  const id = `CO_KGI_${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
-  requests.unshift({
-    id,
+function createOrder() {
+  if (!amount.value) return;
+  const nextId = Math.max(...orders.map((item) => item.id)) + 1;
+  orders.unshift({
+    id: nextId,
+    scenario: "KGI Cashout",
+    from: "1001",
     currency: currency.value,
     amount: amount.value,
-    from: "(1001)",
-    to: "(1000)",
+    to: "1000",
     custodian: "KGI",
     status: "PENDING REVIEW",
-    bankStatus: "NOT SUBMITTED",
-    assetType: assetType.value,
-    currentBalance: balance.value,
-    created: now,
-    updated: now,
+    assetType: fromAssetType.value,
+    balance: amount.value,
+    created: "2026/05/27 10:00:00 (UTC+08:00)",
+    updated: "2026/05/27 10:00:00 (UTC+08:00)",
     requester: "Sean Hsu",
-    reviewer: "-",
-    reason: document.querySelector("#reason").value,
-    note: document.querySelector("#note").value,
-    rail: currency.value === "USD" ? "VASPF API / instructCode 04" : "P payment file / instruction code 04",
-    logs: [
-      [`Sean Hsu created KGIB cashout request for full balance ${currency.value} ${amount.value}.`, now],
-      [`System captured available balance ${currency.value} ${balance.value} for ${assetType.value} under UID 1001 / KGI.`, now],
-      ["Waiting for checker review; bank instruction not submitted.", now],
-    ],
+    reason: reason.value,
+    note: note.value,
   });
-  renderRows();
-  closeModals();
-  resetKgibForm();
-  showToast("KGIB Cashout created. Pending checker review; no bank submission yet.");
+  showList();
+  showToast(`Order ${nextId} created. Pending checker review.`);
 }
 
-function reviewRequest(approved) {
-  const item = requests.find((request) => request.id === activeId);
-  if (!item) return;
-  item.reviewer = "Finance Checker";
-  if (approved) {
-    item.status = "APPROVED";
-    item.bankStatus = "SUBMITTED";
-    item.bankReference = item.currency === "USD" ? "VASPF-20260526-00818" : "KGI-P-20260526-000043";
-    item.updated = "2026/05/26 16:10:04 (UTC+08:00)";
-    item.logs.unshift(["KGIB instruction 04 submitted after approval and balance revalidation.", "2026/05/26 16:10:04 (UTC+08:00)"]);
-    item.logs.unshift(["Finance Checker approved the cashout request.", "2026/05/26 16:10:03 (UTC+08:00)"]);
-    showToast("Approved. KGIB instruction 04 submitted and evidence recorded.");
+function openReview(id) {
+  const item = orders.find((order) => order.id === Number(id));
+  activeOrder = item;
+  listPage.hidden = true;
+  formPage.hidden = false;
+  formCrumb.textContent = `View / ${item.id}`;
+  formTitle.textContent = "KGI Cashout";
+  setEditable(false);
+  currency.value = item.currency;
+  fromAssetType.value = item.assetType;
+  toAssetType.value = item.assetType;
+  fromBalance.textContent = `${item.currency} ${item.balance}`;
+  toBalance.textContent = "--";
+  amount.value = item.amount;
+  reason.value = item.reason;
+  note.value = item.note;
+  statusRow.hidden = false;
+  orderStatus.value = item.status;
+  if (item.status === "PENDING REVIEW") {
+    formFooter.innerHTML = `
+      <button class="btn" data-cancel-review type="button">Cancel</button>
+      <button class="btn danger" data-reject type="button">Reject</button>
+      <button class="btn primary" data-approve type="button">Approve</button>
+    `;
   } else {
-    item.status = "REJECTED";
-    item.bankStatus = "NOT SUBMITTED";
-    item.updated = "2026/05/26 16:10:03 (UTC+08:00)";
-    item.logs.unshift(["Finance Checker rejected request. Bank instruction was not submitted.", "2026/05/26 16:10:03 (UTC+08:00)"]);
-    showToast("Rejected. No KGIB bank instruction submitted.");
+    formFooter.innerHTML = `<button class="btn" data-cancel-review type="button">Back</button>`;
   }
-  renderRows();
-  openDetails(item.id);
 }
 
-document.querySelector("#kgibBtn").addEventListener("click", () => {
-  resetKgibForm();
-  openModal(kgibModal);
-});
-document.querySelector("#newBtn").addEventListener("click", () => {
-  showToast("Existing Cash Out creation is outside this KGIB prototype.");
-});
-document.querySelector("#closeKgibBtn").addEventListener("click", closeModals);
-document.querySelector("#cancelKgibBtn").addEventListener("click", closeModals);
-modalBackdrop.addEventListener("click", closeModals);
-currency.addEventListener("change", updateBalance);
-assetType.addEventListener("change", updateBalance);
-createKgibBtn.addEventListener("click", createKgibRequest);
-document.querySelector("#searchBtn").addEventListener("click", renderRows);
-document.querySelector("#clearBtn").addEventListener("click", () => {
-  document.querySelectorAll(".toolbar input").forEach((input) => { input.value = ""; });
-  document.querySelectorAll(".toolbar select").forEach((select) => { select.value = ""; });
-  renderRows();
-});
-requestRows.addEventListener("click", (event) => {
-  const detailButton = event.target.closest("[data-detail]");
-  if (detailButton) openDetails(detailButton.dataset.detail);
-});
-detailFooter.addEventListener("click", (event) => {
-  if (event.target.closest("[data-approve]")) reviewRequest(true);
-  if (event.target.closest("[data-reject]")) reviewRequest(false);
-  if (event.target.closest("[data-close-detail]")) closeModals();
-});
-document.querySelector("#closeDetailBtn").addEventListener("click", closeModals);
+function reviewOrder(approved) {
+  if (!activeOrder) return;
+  activeOrder.status = approved ? "APPROVED" : "REJECTED";
+  activeOrder.updated = "2026/05/27 10:03:12 (UTC+08:00)";
+  showList();
+  showToast(approved ? "Approved. KGIB instruction 04 submitted." : "Rejected. No bank instruction submitted.");
+}
 
-renderRows();
+document.querySelector("#newBtn").addEventListener("click", openCreate);
+document.querySelector("#backBtn").addEventListener("click", showList);
+currency.addEventListener("change", updateAmount);
+fromAssetType.addEventListener("change", updateAmount);
+orderRows.addEventListener("click", (event) => {
+  const viewButton = event.target.closest("[data-view]");
+  if (viewButton) openReview(viewButton.dataset.view);
+});
+formFooter.addEventListener("click", (event) => {
+  if (event.target.closest("[data-cancel-review]")) showList();
+  if (event.target.closest("[data-reject]")) reviewOrder(false);
+  if (event.target.closest("[data-approve]")) reviewOrder(true);
+});
+
+renderOrders();

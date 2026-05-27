@@ -3,186 +3,164 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KGIB Cashout - Operational Transfer CMS Prototype</title>
-    <link rel="stylesheet" href="./kgib-cashout.css?v=20260527-3" />
+    <title>KGI Cashout - Operational Transfer 2.0 Prototype</title>
+    <link rel="stylesheet" href="./kgib-cashout.css?v=20260527-4" />
   </head>
   <body>
     <div class="app-shell">
       <aside class="sider">
         <div class="brand">Exchange - TW</div>
         <nav class="menu" aria-label="CMS navigation">
-          <button class="menu-section" type="button">User Management <span>⌄</span></button>
-          <button class="menu-section" type="button">Risk Management <span>⌄</span></button>
-          <button class="menu-section open" type="button"><span>◉ &nbsp;Finance Management</span><span>⌃</span></button>
-          <button class="menu-subitem" type="button">Accounting <span>⌄</span></button>
-          <button class="menu-subitem" type="button">Daily Recon <span>⌄</span></button>
-          <button class="menu-item active" type="button">Operational Transfer</button>
-          <button class="menu-subitem" type="button">Operational Transfer ... <span>⌄</span></button>
-          <button class="menu-section" type="button">Product Management <span>⌄</span></button>
-          <button class="menu-section" type="button">Operations Manage... <span>⌄</span></button>
+          <button class="menu-section" type="button">User Management <span>&#8964;</span></button>
+          <button class="menu-section" type="button">Risk Management <span>&#8964;</span></button>
+          <button class="menu-section open" type="button"><span class="money-icon">$</span>Finance Management <span>&#8963;</span></button>
+          <button class="menu-subitem" type="button">Accounting <span>&#8964;</span></button>
+          <button class="menu-subitem" type="button">Daily Recon <span>&#8964;</span></button>
+          <button class="menu-item" type="button">Operational Transfer</button>
+          <button class="menu-item active" type="button">Operational Transfer 2.0</button>
+          <button class="menu-section" type="button">Product Management <span>&#8964;</span></button>
+          <button class="menu-section" type="button">Operations Manage... <span>&#8964;</span></button>
         </nav>
       </aside>
 
       <div class="workspace">
         <header class="systembar">
           <span class="version">v.0.73.1.beta-1_e4cb9fb</span>
-          <span>🇬🇧 English⌄</span>
-          <span class="toggle">☼</span>
+          <span>English&#8964;</span>
+          <span class="toggle">O</span>
           <span class="profile">S</span>
         </header>
+
         <main class="main">
-          <div class="breadcrumb">ⓢ Finance Management&nbsp;&nbsp;/&nbsp;&nbsp;Operational Transfer</div>
-          <div class="page-heading">
+          <section id="listPage" class="page">
+            <div class="breadcrumb">$ Finance Management &nbsp;/&nbsp; Operational Transfer 2.0 &nbsp;/&nbsp; Orders</div>
             <h1>Operational Transfer</h1>
-          </div>
+            <nav class="tabs" aria-label="Operational Transfer 2.0 types">
+              <button type="button">Transfer</button>
+              <button type="button">Batch Transfer</button>
+              <button type="button">Swap</button>
+              <button class="active" type="button">KGI Cashout</button>
+            </nav>
 
-          <nav class="tabs" aria-label="Operational Transfer types">
-            <button type="button">Swap</button>
-            <button type="button">Marketing Swap</button>
-            <button type="button">Otc Swap</button>
-            <button type="button">Payin</button>
-            <button type="button">Payout</button>
-            <button type="button">Transfer</button>
-            <button type="button">Cashin</button>
-            <button class="active" type="button">Cashout</button>
-            <button type="button">Marketing Transfer</button>
-          </nav>
+            <div class="list-command">
+              <p>If you can not find order type you want, please use old <a href="#">operational-transfer</a>. We would migrate data soon.</p>
+              <button id="newBtn" class="btn primary" type="button"><span class="plus-icon">+</span> New</button>
+            </div>
 
-          <section class="toolbar" aria-label="Cashout filters and actions">
-            <div class="date-range">2026-05-12 &nbsp; → &nbsp; 2026-05-26 <span>▣</span></div>
-            <input id="fromFilter" class="input" type="text" placeholder="From" />
-            <input id="toFilter" class="input" type="text" placeholder="To" />
-            <select id="statusFilter" class="input compact">
-              <option value="">Status</option>
-              <option value="PENDING REVIEW">Pending Review</option>
-              <option value="APPROVED">Approved</option>
-              <option value="REJECTED">Rejected</option>
-              <option value="COMPLETED">Completed</option>
-            </select>
-            <select id="currencyFilter" class="input compact">
-              <option value="">Currency</option>
-              <option value="USD">USD</option>
-              <option value="TWD">TWD</option>
-            </select>
-            <button id="searchBtn" class="btn primary" type="button">Search</button>
-            <button id="clearBtn" class="btn primary" type="button">Clear Filter</button>
-            <button id="newBtn" class="btn primary" type="button">⊞ New</button>
-            <button id="kgibBtn" class="btn primary kgib" type="button">⊞ KGIB Cashout</button>
+            <section class="table-panel" aria-label="KGI Cashout orders">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Scenario <span class="filter-icon"></span></th>
+                    <th>From <span class="filter-icon"></span></th>
+                    <th>Currency <span class="filter-icon"></span></th>
+                    <th>Amount</th>
+                    <th>To <span class="filter-icon"></span></th>
+                    <th>Custodian</th>
+                    <th>Status <span class="filter-icon"></span></th>
+                    <th>Created Time <span class="filter-icon"></span></th>
+                    <th>Update Time</th>
+                    <th>Request By</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="orderRows"></tbody>
+              </table>
+            </section>
+            <div class="pagination"><button type="button">&lsaquo;</button><button class="selected" type="button">1</button><button type="button">&rsaquo;</button></div>
           </section>
 
-          <section class="table-panel" aria-label="Cashout requests">
-            <table>
-              <thead>
-                <tr>
-                  <th>Currency</th>
-                  <th>Amount</th>
-                  <th>From</th>
-                  <th>To</th>
-                  <th>Custodian</th>
-                  <th>Status</th>
-                  <th>Bank Execution</th>
-                  <th>Created Time</th>
-                  <th>Update Time</th>
-                  <th>Request By</th>
-                  <th>Review By</th>
-                  <th>Reason</th>
-                  <th>Note</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="requestRows"></tbody>
-            </table>
+          <section id="formPage" class="page" hidden>
+            <div class="breadcrumb">$ Finance Management &nbsp;/&nbsp; Operational Transfer 2.0 &nbsp;/&nbsp; Orders &nbsp;/&nbsp; KGI Cashout &nbsp;/&nbsp; <span id="formCrumb">Create</span></div>
+            <div class="form-title">
+              <button id="backBtn" class="back-btn" type="button" aria-label="Back">&larr;</button>
+              <h1 id="formTitle">KGI Cashout</h1>
+            </div>
+
+            <section class="form-card" aria-label="KGI Cashout form">
+              <form id="cashoutForm">
+                <div class="form-row">
+                  <label class="required" for="scenario">Scenario</label>
+                  <select id="scenario" disabled>
+                    <option selected>KGI Cashout</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <label class="required" for="currency">Transfer Currency</label>
+                  <select id="currency">
+                    <option value="">Please select</option>
+                    <option value="USD">USD</option>
+                    <option value="TWD">TWD</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <label class="required" for="custodian">Custodian</label>
+                  <input id="custodian" value="KGI" readonly />
+                </div>
+                <div class="form-row linked">
+                  <label class="required" for="fromUid">From Uid</label>
+                  <div class="stacked-control">
+                    <input id="fromUid" value="1001" readonly />
+                    <label class="checkbox"><input type="checkbox" disabled /> Use sub account</label>
+                  </div>
+                </div>
+                <div class="form-row balance-row">
+                  <label class="required" for="fromAssetType">From Asset Type</label>
+                  <div class="stacked-control">
+                    <select id="fromAssetType">
+                      <option value="">Please select</option>
+                      <option value="C_DEPOSIT_FEE">C_DEPOSIT_FEE</option>
+                      <option value="C_WITHDRAWAL_FEE">C_WITHDRAWAL_FEE</option>
+                      <option value="C_TRADING_FEE" disabled>C_TRADING_FEE - pending validation</option>
+                    </select>
+                    <span class="balance-label">Available Balance&nbsp; : &nbsp;<strong id="fromBalance">--</strong></span>
+                  </div>
+                </div>
+                <div class="form-row linked">
+                  <label class="required" for="toUid">To Uid</label>
+                  <div class="stacked-control">
+                    <input id="toUid" value="1000" readonly />
+                    <label class="checkbox"><input type="checkbox" disabled /> Use sub account</label>
+                  </div>
+                </div>
+                <div class="form-row balance-row">
+                  <label class="required" for="toAssetType">To Asset Type</label>
+                  <div class="stacked-control">
+                    <input id="toAssetType" value="" readonly />
+                    <span class="balance-label">Available Balance&nbsp; : &nbsp;<strong id="toBalance">--</strong></span>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <label class="required" for="amount">Amount</label>
+                  <input id="amount" value="" readonly />
+                </div>
+                <div class="form-row">
+                  <label class="required" for="reason">Reason</label>
+                  <select id="reason">
+                    <option value="KGI fee balance cashout">KGI fee balance cashout</option>
+                    <option value="Others">Others</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <label for="note">Note</label>
+                  <input id="note" value="Full balance KGI fee cashout for settlement and reconciliation." />
+                </div>
+                <div id="statusRow" class="form-row" hidden>
+                  <label for="orderStatus">Status</label>
+                  <input id="orderStatus" readonly />
+                </div>
+              </form>
+
+              <div class="form-footer" id="formFooter">
+                <button id="saveBtn" class="btn primary" type="button" disabled><span class="save-icon"></span> Save</button>
+              </div>
+            </section>
           </section>
-          <div class="pagination"><button type="button">‹</button><button class="selected" type="button">1</button><button type="button">›</button></div>
         </main>
       </div>
     </div>
-
-    <div class="backdrop" id="modalBackdrop" hidden></div>
-    <section class="modal" id="kgibModal" role="dialog" aria-modal="true" aria-labelledby="kgibModalTitle" hidden>
-      <header class="modal-header">
-        <div>
-          <h2 id="kgibModalTitle">KGIB Cashout</h2>
-          <p class="muted">Full-balance KGI fee settlement request</p>
-        </div>
-        <button class="close" id="closeKgibBtn" type="button" aria-label="Close">×</button>
-      </header>
-      <div class="control-note">
-        <strong>Controlled flow:</strong> UID is fixed at <code>1001 → 1000</code>. Checker approval is required before KGIB instruction <code>04</code> submission.
-      </div>
-      <form id="kgibForm">
-        <h3>From</h3>
-        <div class="form-grid three">
-          <label>Uid
-            <input value="(1001)" readonly />
-          </label>
-          <label>Currency <span class="required">*</span>
-            <select id="currency" required>
-              <option value="">Currency</option>
-              <option value="USD">USD</option>
-              <option value="TWD">TWD</option>
-            </select>
-          </label>
-          <label>Asset Type <span class="required">*</span>
-            <select id="assetType" required>
-              <option value="">Asset type</option>
-              <option value="C_DEPOSIT_FEE">C_DEPOSIT_FEE</option>
-              <option value="C_WITHDRAWAL_FEE">C_WITHDRAWAL_FEE</option>
-              <option value="C_TRADING_FEE" disabled>C_TRADING_FEE - pending validation</option>
-            </select>
-          </label>
-          <label>Custodian
-            <input value="KGI" readonly />
-          </label>
-          <label>Current Balance
-            <div class="value-with-unit"><input id="balance" value="-" readonly /><span id="balanceCurrency"></span></div>
-          </label>
-          <label>Amount
-            <div class="value-with-unit"><input id="amount" value="-" readonly /><span id="amountCurrency"></span></div>
-          </label>
-        </div>
-        <div class="direction">↓</div>
-        <h3>To</h3>
-        <div class="form-grid three destination">
-          <label>Uid
-            <input value="(1000)" readonly />
-          </label>
-          <label>Asset Type
-            <input id="destinationAsset" value="-" readonly />
-          </label>
-        </div>
-        <div id="feeNotice" class="fee-notice" hidden></div>
-        <div class="form-grid footer-fields">
-          <label>Reason
-            <select id="reason">
-              <option>KGIB fee balance cashout</option>
-              <option>Others</option>
-            </select>
-          </label>
-          <label class="wide">Note
-            <textarea id="note" rows="3">Full balance KGIB fee cashout for settlement and reconciliation.</textarea>
-          </label>
-          <label>Status
-            <input value="PENDING REVIEW" readonly />
-          </label>
-        </div>
-      </form>
-      <footer class="modal-footer">
-        <button id="cancelKgibBtn" class="btn" type="button">Cancel</button>
-        <button id="createKgibBtn" class="btn primary" type="button" disabled>Create</button>
-      </footer>
-    </section>
-
-    <section class="modal detail-modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailTitle" hidden style="display: none;">
-      <header class="modal-header">
-        <h2 id="detailTitle">Cash Out</h2>
-        <button id="closeDetailBtn" class="close" type="button" aria-label="Close">×</button>
-      </header>
-      <div id="detailBody"></div>
-      <footer class="modal-footer" id="detailFooter"></footer>
-    </section>
-
     <div class="toast" id="toast" role="status"></div>
-    <script src="./kgib-cashout.js?v=20260527-3"></script>
+    <script src="./kgib-cashout.js?v=20260527-4"></script>
   </body>
 </html>
