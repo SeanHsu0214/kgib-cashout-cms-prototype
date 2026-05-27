@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KGI Cashout - Operational Transfer 2.0 Prototype</title>
-    <link rel="stylesheet" href="./kgib-cashout.css?v=20260527-4" />
+    <title>KGI Cashout - Operational Transfer Orders Prototype</title>
+    <link rel="stylesheet" href="./kgib-cashout.css?v=20260527-5" />
   </head>
   <body>
     <div class="app-shell">
@@ -17,7 +17,8 @@
           <button class="menu-subitem" type="button">Accounting <span>&#8964;</span></button>
           <button class="menu-subitem" type="button">Daily Recon <span>&#8964;</span></button>
           <button class="menu-item" type="button">Operational Transfer</button>
-          <button class="menu-item active" type="button">Operational Transfer 2.0</button>
+          <button class="menu-subitem transfer-parent open" type="button">Operational Transfer ... <span>&#8963;</span></button>
+          <button class="menu-child active" type="button">Orders</button>
           <button class="menu-section" type="button">Product Management <span>&#8964;</span></button>
           <button class="menu-section" type="button">Operations Manage... <span>&#8964;</span></button>
         </nav>
@@ -33,9 +34,9 @@
 
         <main class="main">
           <section id="listPage" class="page">
-            <div class="breadcrumb">$ Finance Management &nbsp;/&nbsp; Operational Transfer 2.0 &nbsp;/&nbsp; Orders</div>
+            <div class="breadcrumb">$ Finance Management &nbsp;/&nbsp; Operational Transfer &nbsp;/&nbsp; Orders</div>
             <h1>Operational Transfer</h1>
-            <nav class="tabs" aria-label="Operational Transfer 2.0 types">
+            <nav class="tabs" aria-label="Operational Transfer order types">
               <button type="button">Transfer</button>
               <button type="button">Batch Transfer</button>
               <button type="button">Swap</button>
@@ -43,7 +44,6 @@
             </nav>
 
             <div class="list-command">
-              <p>If you can not find order type you want, please use old <a href="#">operational-transfer</a>. We would migrate data soon.</p>
               <button id="newBtn" class="btn primary" type="button"><span class="plus-icon">+</span> New</button>
             </div>
 
@@ -72,7 +72,7 @@
           </section>
 
           <section id="formPage" class="page" hidden>
-            <div class="breadcrumb">$ Finance Management &nbsp;/&nbsp; Operational Transfer 2.0 &nbsp;/&nbsp; Orders &nbsp;/&nbsp; KGI Cashout &nbsp;/&nbsp; <span id="formCrumb">Create</span></div>
+            <div class="breadcrumb">$ Finance Management &nbsp;/&nbsp; Operational Transfer &nbsp;/&nbsp; Orders &nbsp;/&nbsp; KGI Cashout &nbsp;/&nbsp; <span id="formCrumb">Create</span></div>
             <div class="form-title">
               <button id="backBtn" class="back-btn" type="button" aria-label="Back">&larr;</button>
               <h1 id="formTitle">KGI Cashout</h1>
@@ -161,6 +161,6 @@
       </div>
     </div>
     <div class="toast" id="toast" role="status"></div>
-    <script src="./kgib-cashout.js?v=20260527-4"></script>
+    <script src="./kgib-cashout.js?v=20260527-5"></script>
   </body>
 </html>

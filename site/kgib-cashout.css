@@ -61,7 +61,11 @@ h1, p { margin: 0; }
 }
 .menu-subitem { padding-left: 52px !important; }
 .menu-item { padding-left: 52px !important; }
-.menu-item.active {
+.transfer-parent.open { color: var(--blue); }
+.menu-child {
+  padding-left: 78px !important;
+}
+.menu-child.active {
   width: calc(100% - 12px);
   margin: 0 6px;
   border-radius: 7px;
@@ -130,17 +134,12 @@ h1 {
   font-weight: 500;
 }
 .list-command {
-  min-height: 92px;
+  min-height: 76px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 20px;
   font-size: 16px;
-}
-.list-command a {
-  color: var(--blue);
-  text-decoration: none;
-  margin: 0 7px;
 }
 .btn {
   min-height: 36px;
@@ -235,6 +234,10 @@ th {
   color: #bfbfbf;
   background: #fafafa;
   cursor: not-allowed;
+}
+.icon-action:hover:not(:disabled) {
+  color: var(--blue);
+  border-color: var(--blue);
 }
 .pagination {
   display: flex;

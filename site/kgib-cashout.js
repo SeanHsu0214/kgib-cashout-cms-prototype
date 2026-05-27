@@ -109,7 +109,7 @@ function renderOrders() {
       <td>
         <div class="action-group">
           <button class="icon-action" data-view="${item.id}" type="button" aria-label="View order ${item.id}">${eyeIcon()}</button>
-          <button class="icon-action" type="button" disabled aria-label="Edit disabled">${editIcon()}</button>
+          <button class="icon-action" data-edit="${item.id}" type="button" aria-label="Edit order ${item.id}">${editIcon()}</button>
         </div>
       </td>
     </tr>
@@ -208,12 +208,12 @@ function createOrder() {
   showToast(`Order ${nextId} created. Pending checker review.`);
 }
 
-function openReview(id) {
+function openOrder(id, mode) {
   const item = orders.find((order) => order.id === Number(id));
   activeOrder = item;
   listPage.hidden = true;
   formPage.hidden = false;
-  formCrumb.textContent = `View / ${item.id}`;
+  formCrumb.textContent = `${mode === "edit" ? "Edit" : "View"} / ${item.id}`;
   formTitle.textContent = "KGI Cashout";
   setEditable(false);
   currency.value = item.currency;
@@ -226,7 +226,7 @@ function openReview(id) {
   note.value = item.note;
   statusRow.hidden = false;
   orderStatus.value = item.status;
-  if (item.status === "PENDING REVIEW") {
+  if (mode === "edit" && item.status === "PENDING REVIEW") {
     formFooter.innerHTML = `
       <button class="btn" data-cancel-review type="button">Cancel</button>
       <button class="btn danger" data-reject type="button">Reject</button>
@@ -251,7 +251,9 @@ currency.addEventListener("change", updateAmount);
 fromAssetType.addEventListener("change", updateAmount);
 orderRows.addEventListener("click", (event) => {
   const viewButton = event.target.closest("[data-view]");
-  if (viewButton) openReview(viewButton.dataset.view);
+  const editButton = event.target.closest("[data-edit]");
+  if (viewButton) openOrder(viewButton.dataset.view, "view");
+  if (editButton) openOrder(editButton.dataset.edit, "edit");
 });
 formFooter.addEventListener("click", (event) => {
   if (event.target.closest("[data-cancel-review]")) showList();
