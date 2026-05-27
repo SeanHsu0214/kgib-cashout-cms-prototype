@@ -332,11 +332,7 @@ code { color: var(--blue); }
 .detail-modal {
   width: min(820px, calc(100vw - 32px));
   overflow: hidden;
-  display: flex;
   flex-direction: column;
-}
-.detail-modal[hidden] {
-  display: none;
 }
 .detail-modal #detailBody {
   min-height: 0;

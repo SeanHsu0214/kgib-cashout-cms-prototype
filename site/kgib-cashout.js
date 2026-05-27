@@ -170,12 +170,16 @@ function renderRows() {
 function openModal(modal) {
   modalBackdrop.hidden = false;
   modal.hidden = false;
+  if (modal === detailModal) {
+    detailModal.style.display = "flex";
+  }
 }
 
 function closeModals() {
   modalBackdrop.hidden = true;
   kgibModal.hidden = true;
   detailModal.hidden = true;
+  detailModal.style.display = "none";
 }
 
 function resetKgibForm() {
