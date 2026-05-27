@@ -22,6 +22,7 @@ The repository is configured for GitHub Pages deployment from `site/` through `.
 - Nested Operational Transfer `Orders` page with a dedicated `KGI Cashout` tab plus `Custodian` and `Bank Execution Status` columns
 - Full-page `New` form following the Orders pattern
 - Form controls fixed to `1001 -> 1000`, KGI custodian, and system-populated full-balance amount
+- Destination asset type is currency-driven: `USD -> U_NORMAL_KGI_USD`, `TWD -> U_NORMAL_KGI_TWD`
 - Eye action opens a read-only view; the pencil action opens the checker page with `Reject` / `Approve` actions for pending requests
 - Bank execution status is distinct from review status: new/rejected requests are `NOT SUBMITTED`, approved requests become `SUBMITTED`, and historical confirmed execution can show `ACCEPTED`
 

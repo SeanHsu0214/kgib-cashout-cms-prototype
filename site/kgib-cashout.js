@@ -5,6 +5,11 @@ const balanceMap = {
   "TWD|C_WITHDRAWAL_FEE": "256,800",
 };
 
+const destinationAssetTypeMap = {
+  USD: "U_NORMAL_KGI_USD",
+  TWD: "U_NORMAL_KGI_TWD",
+};
+
 const orders = [
   {
     id: 102,
@@ -180,7 +185,7 @@ function openCreate() {
 
 function updateAmount() {
   const balance = balanceMap[`${currency.value}|${fromAssetType.value}`];
-  toAssetType.value = fromAssetType.value;
+  toAssetType.value = destinationAssetTypeMap[currency.value] || "";
   if (balance) {
     fromBalance.textContent = `${currency.value} ${balance}`;
     toBalance.textContent = "--";
@@ -231,7 +236,7 @@ function openOrder(id, mode) {
   setEditable(false);
   currency.value = item.currency;
   fromAssetType.value = item.assetType;
-  toAssetType.value = item.assetType;
+  toAssetType.value = destinationAssetTypeMap[item.currency];
   fromBalance.textContent = `${item.currency} ${item.balance}`;
   toBalance.textContent = "--";
   amount.value = item.amount;
